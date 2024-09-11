@@ -1,9 +1,10 @@
 import React from "react";
+import HUNGRY from '../../assets/HUNGRY.svg';
 
 const Logo = () => {
   return (
  <>
-    <div className="text-white text-2xl font-bold">MyLogo</div>
+    <img className="h-32 w-32" src={HUNGRY} alt="Site-Logo" />
 </>
   )
 };

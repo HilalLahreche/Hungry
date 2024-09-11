@@ -34,7 +34,7 @@ const BurgerMenu = () => {
 
       {/* Mobile Menu   Menu Links - for desktop*/}
       <div
-        className={`absolute right-0 top-full mt-2 bg-pink-600 transition-all duration-300 ease-in-out transform ${
+        className={`absolute right-0 top-full mt-2 bg-teal-600 transition-all duration-300 ease-in-out transform ${
           isOpen ? 'translate-y-0 block' : '-translate-y-full hidden'
         } space-y-4 w-48 p-4 shadow-lg rounded-lg`}
       >
