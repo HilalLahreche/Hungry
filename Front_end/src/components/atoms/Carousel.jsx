@@ -55,12 +55,12 @@ const Carousel = () => {
   return (
     <section id="tranding" className="py-16 bg-gray-100">
       <div className="container mx-auto text-center">
-        <h3 className="text-xl font-semibold text-gray-600">
+        {/*<h3 className="text-xl font-semibold text-gray-600">
           - Popular Delivery -
         </h3>
         <h1 className="text-4xl font-bold text-orange-500 py-4">
           Trending Food
-        </h1>
+        </h1>*/}
       </div>
       <div className="container mx-auto px-8">
         <div className="swiper tranding-slider relative py-8">
