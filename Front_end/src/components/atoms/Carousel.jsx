@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import Swiper from "swiper/bundle";
 import "swiper/css/bundle";
+import "ionicons";
+import "../../assets/images/star-outline.svg";
 import burgerJpg from "../../assets/images/burger.jpg";
 import pizzaJpg from "../../assets/images/pizza.jpg";
 import healthyJpg from "../../assets/images/healthy.jpg";
@@ -10,6 +12,7 @@ import diabete2Jpg from "../../assets/images/diabete2.jpg";
 import icecreamJpg from "../../assets/images/icecream.jpg";
 import miamhealthyJpg from "../../assets/images/miamhealthy.jpg";
 import paellaJpg from "../../assets/images/paella.jpg";
+import sushiJpg from "../../assets/images/sushi.jpg";
 
 const Carousel = () => {
   useEffect(() => {
@@ -91,7 +94,11 @@ const Carousel = () => {
                         {Array(5)
                           .fill(0)
                           .map((_, i) => (
-                            <ion-icon name="star" key={i}></ion-icon>
+                            <ion-icon
+                              name="star-outline"
+                              src="star-outline"
+                              key={i}
+                            ></ion-icon>
                           ))}
                       </div>
                     </h3>
@@ -101,15 +108,16 @@ const Carousel = () => {
             ))}
           </div>
 
-          <div className="tranding-slider-control flex justify-center items-center absolute bottom-4 inset-x-0">
-            <div className="swiper-button-prev slider-arrow bg-white rounded-full p-2 shadow-md mx-4">
+          <div className="tranding-slider-control flex justify-center items-center absolute bottom-40 inset-x-0">
+            <div className="swiper-button-prev slider-arrow bg-transparent rounded-full p-2 shadow-mn mx-4">
               <ion-icon name="arrow-back-outline"></ion-icon>
             </div>
-            <div className="swiper-pagination"></div>
-            <div className="swiper-button-next slider-arrow bg-white rounded-full p-2 shadow-md mx-4">
+
+            <div className="swiper-button-next slider-arrow bg-transparent rounded-full p-2 shadow-mn mx-4">
               <ion-icon name="arrow-forward-outline"></ion-icon>
             </div>
           </div>
+          <div className="swiper-pagination "></div>
         </div>
       </div>
     </section>
@@ -119,57 +127,63 @@ const Carousel = () => {
 const slides = [
   {
     imgSrc: burgerJpg,
-    price: "$20",
+    price: "20",
     name: "Special Burger",
     rating: 4.5,
   },
   {
     imgSrc: icecreamJpg,
-    price: "$20",
+    price: "€20",
     name: "Ice Cream",
     rating: 4.5,
   },
   {
     imgSrc: healthyJpg,
-    price: "$18",
+    price: "€18",
     name: "Healthy Food",
     rating: 4.5,
   },
   {
     imgSrc: burger2Jpg,
-    price: "$15",
+    price: "€15",
     name: "Burger Combo",
     rating: 4.5,
   },
   {
     imgSrc: miamhealthyJpg,
-    price: "$25",
+    price: "€25",
     name: "Healthy!",
     rating: 4.5,
   },
   {
     imgSrc: pizzaJpg,
-    price: "$20",
+    price: "€20",
     name: "Pizza",
     rating: 4.5,
   },
   {
     imgSrc: diabeteJpg,
-    price: "$15",
+    price: "€15",
     name: "Yummi!",
     rating: 4.5,
   },
   {
     imgSrc: paellaJpg,
-    price: "$25",
+    price: "€25",
     name: "Olé!",
     rating: 4.5,
   },
   {
     imgSrc: diabete2Jpg,
-    price: "$16",
+    price: "€16",
     name: "Sugar Crush",
     rating: 4.5,
+  },
+  {
+    imgSrc: sushiJpg,
+    price: "€12",
+    name: "Nigiri",
+    rating: 4.7,
   },
 ];
 
