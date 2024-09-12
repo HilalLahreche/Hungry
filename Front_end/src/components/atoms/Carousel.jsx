@@ -19,6 +19,10 @@ const Carousel = () => {
       centeredSlides: true,
       loop: true,
       slidesPerView: "auto",
+      autoplay: {
+        delay: 3000, // Délai de 3 secondes avant la transition automatique
+        disableOnInteraction: false, // Garde l'autoplay actif même après une interaction manuelle
+      },
       coverflowEffect: {
         rotate: 0,
         stretch: 0,
@@ -38,31 +42,31 @@ const Carousel = () => {
 
   return (
     <section id="tranding" className="py-16 bg-gray-100">
-      <div className="container mx-50 text-center">
-        <h3 className="text-xl font-semibold text-gray-600">
-          - popular Delivery -
+      <div className="container mx-auto text-center">
+        {/*<h3 className="text-xl font-semibold text-gray-600">
+          - Popular Delivery -
         </h3>
         <h1 className="text-4xl font-bold text-orange-500 py-4">
-          Tranding food
-        </h1>
+          Trending Food
+        </h1>*/}
       </div>
-      <div className="container mx-50">
-        <div className="swiper tranding-slider relative h-24 py-8">
+      <div className="container mx-auto px-8">
+        <div className="swiper tranding-slider relative py-8">
           <div className="swiper-wrapper">
             {slides.map((slide, index) => (
               <div
-                className="swiper-slide tranding-slide w-20 h-20 relative"
+                className="swiper-slide tranding-slide w-80 h-80 relative flex flex-col items-center"
                 key={index}
               >
-                <div className="tranding-slide-img">
+                <div className="tranding-slide-img w-full h-full">
                   <img
                     src={slide.imgSrc}
-                    alt="Tranding"
-                    className="w-100 h-100 object-cover rounded-lg"
+                    alt="Trending Food"
+                    className="w-full h-full object-cover rounded-lg brightness-100"
                   />
                 </div>
-                <div className="tranding-slide-content absolute inset-0 flex flex-col justify-between p-4 text-white">
-                  <h1 className="food-price text-2xl font-bold absolute top-4 right-4">
+                <div className="tranding-slide-content absolute inset-0 flex flex-col justify-between p-4 text-white bg-black bg-opacity-20 rounded-lg">
+                  <h1 className="food-price text-2xl font-bold absolute top-4 right-4 bg-white text-black p-2 rounded">
                     {slide.price}
                   </h1>
                   <div className="tranding-slide-content-bottom absolute bottom-4 left-4">
@@ -102,56 +106,56 @@ const Carousel = () => {
 
 const slides = [
   {
-    imgSrc: burgerJpg, // Path to images in the public folder
-    price: "$20",
+    imgSrc: burgerJpg,
+    price: "€20",
     name: "Special Burger",
     rating: 4.5,
   },
   {
     imgSrc: icecreamJpg,
-    price: "$20",
+    price: "€20",
     name: "Ice Cream",
     rating: 4.5,
   },
   {
     imgSrc: healthyJpg,
-    price: "$18",
+    price: "€18",
     name: "Healthy Food",
     rating: 4.5,
   },
   {
     imgSrc: burger2Jpg,
-    price: "$15",
+    price: "€15",
     name: "Burger Combo",
     rating: 4.5,
   },
   {
     imgSrc: miamhealthyJpg,
-    price: "$25",
+    price: "€25",
     name: "Healthy!",
     rating: 4.5,
   },
   {
     imgSrc: pizzaJpg,
-    price: "$20",
+    price: "€20",
     name: "Pizza",
     rating: 4.5,
   },
   {
     imgSrc: diabeteJpg,
-    price: "$15",
+    price: "€15",
     name: "Yummi!",
     rating: 4.5,
   },
   {
     imgSrc: paellaJpg,
-    price: "$25",
+    price: "€25",
     name: "Olé!",
     rating: 4.5,
   },
   {
     imgSrc: diabete2Jpg,
-    price: "$16",
+    price: "€16",
     name: "Sugar Crush",
     rating: 4.5,
   },
