@@ -20,8 +20,8 @@ const Carousel = () => {
       loop: true,
       slidesPerView: "auto",
       autoplay: {
-        delay: 3000, // Délai de 3 secondes avant la transition automatique
-        disableOnInteraction: false, // Garde l'autoplay actif même après une interaction manuelle
+        delay: 3000, // Rotation automatique
+        disableOnInteraction: false,
       },
       coverflowEffect: {
         rotate: 0,
@@ -37,25 +37,37 @@ const Carousel = () => {
         nextEl: ".swiper-button-next",
         prevEl: ".swiper-button-prev",
       },
+      breakpoints: {
+        // Breakpoints pour différentes tailles d'écran
+        640: {
+          slidesPerView: 1, // Pour les petits écrans (mobiles)
+        },
+        768: {
+          slidesPerView: 2, // Pour les écrans de tablette
+        },
+        1024: {
+          slidesPerView: 3, // Pour les écrans plus larges
+        },
+      },
     });
   }, []);
 
   return (
     <section id="tranding" className="py-16 bg-gray-100">
       <div className="container mx-auto text-center">
-        {/*<h3 className="text-xl font-semibold text-gray-600">
+        <h3 className="text-xl font-semibold text-gray-600">
           - Popular Delivery -
         </h3>
         <h1 className="text-4xl font-bold text-orange-500 py-4">
           Trending Food
-        </h1>*/}
+        </h1>
       </div>
       <div className="container mx-auto px-8">
         <div className="swiper tranding-slider relative py-8">
           <div className="swiper-wrapper">
             {slides.map((slide, index) => (
               <div
-                className="swiper-slide tranding-slide w-80 h-80 relative flex flex-col items-center"
+                className="swiper-slide tranding-slide w-full h-auto sm:w-64 sm:h-64 md:w-72 md:h-72 lg:w-80 lg:h-80 relative flex flex-col items-center"
                 key={index}
               >
                 <div className="tranding-slide-img w-full h-full">
@@ -107,55 +119,55 @@ const Carousel = () => {
 const slides = [
   {
     imgSrc: burgerJpg,
-    price: "€20",
+    price: "$20",
     name: "Special Burger",
     rating: 4.5,
   },
   {
     imgSrc: icecreamJpg,
-    price: "€20",
+    price: "$20",
     name: "Ice Cream",
     rating: 4.5,
   },
   {
     imgSrc: healthyJpg,
-    price: "€18",
+    price: "$18",
     name: "Healthy Food",
     rating: 4.5,
   },
   {
     imgSrc: burger2Jpg,
-    price: "€15",
+    price: "$15",
     name: "Burger Combo",
     rating: 4.5,
   },
   {
     imgSrc: miamhealthyJpg,
-    price: "€25",
+    price: "$25",
     name: "Healthy!",
     rating: 4.5,
   },
   {
     imgSrc: pizzaJpg,
-    price: "€20",
+    price: "$20",
     name: "Pizza",
     rating: 4.5,
   },
   {
     imgSrc: diabeteJpg,
-    price: "€15",
+    price: "$15",
     name: "Yummi!",
     rating: 4.5,
   },
   {
     imgSrc: paellaJpg,
-    price: "€25",
+    price: "$25",
     name: "Olé!",
     rating: 4.5,
   },
   {
     imgSrc: diabete2Jpg,
-    price: "€16",
+    price: "$16",
     name: "Sugar Crush",
     rating: 4.5,
   },
