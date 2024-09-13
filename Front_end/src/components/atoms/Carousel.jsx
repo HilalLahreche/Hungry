@@ -92,17 +92,40 @@ const Carousel = () => {
                       <div className="rating flex space-x-1 text-orange-500">
                         {Array(5)
                           .fill(0)
-                          .map((_, i) => (
-                            <ion-icon
-                              name={
-                                i < Math.round(slide.rating)
-                                  ? "star"
-                                  : "star-outline"
-                              }
-                              key={i}
-                              className="text-2xl z-10" // Taille et z-index ajustés avec Tailwind
-                            ></ion-icon>
-                          ))}
+                          .map((_, i) => {
+                            const roundedRating = Math.floor(slide.rating);
+                            const hasHalfStar =
+                              slide.rating - roundedRating >= 0.5;
+
+                            if (i < roundedRating) {
+                              // Afficher une étoile pleine
+                              return (
+                                <ion-icon
+                                  name="star"
+                                  key={i}
+                                  className="text-2xl z-10"
+                                ></ion-icon>
+                              );
+                            } else if (i === roundedRating && hasHalfStar) {
+                              // Afficher une demi-étoile
+                              return (
+                                <ion-icon
+                                  name="star-half"
+                                  key={i}
+                                  className="text-2xl z-10"
+                                ></ion-icon>
+                              );
+                            } else {
+                              // Afficher une étoile vide
+                              return (
+                                <ion-icon
+                                  name="star-outline"
+                                  key={i}
+                                  className="text-2xl z-10"
+                                ></ion-icon>
+                              );
+                            }
+                          })}
                       </div>
                     </h3>
                   </div>
@@ -150,7 +173,7 @@ const slides = [
     imgSrc: burger2Jpg,
     price: "$15",
     name: "Burger Combo",
-    rating: 4.5,
+    rating: 3.4,
   },
   {
     imgSrc: miamhealthyJpg,
@@ -162,7 +185,7 @@ const slides = [
     imgSrc: pizzaJpg,
     price: "$20",
     name: "Pizza",
-    rating: 4.5,
+    rating: 4.2,
   },
   {
     imgSrc: diabeteJpg,
