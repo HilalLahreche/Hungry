@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import axios from "axios";
 
 // Correction pour l'icône de marqueur par défaut
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,31 +24,40 @@ const MapDisplay = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
+          console.log("Position obtenue :", pos);
           setPosition([pos.coords.latitude, pos.coords.longitude]);
           setPositionFound(true);
+          searchRestaurants(pos.coords.latitude, pos.coords.longitude); // Recherche des restaurants dès que la position est obtenue
         },
         (error) => {
           console.error("Erreur de géolocalisation :", error);
           setPosition([48.8566, 2.3522]); // Paris comme fallback
           setPositionFound(true);
+          searchRestaurants(48.8566, 2.3522); // Recherche des restaurants à Paris
         }
       );
     } else {
       console.log("La géolocalisation n'est pas supportée par ce navigateur.");
       setPosition([48.8566, 2.3522]); // Paris comme fallback
       setPositionFound(true);
+      searchRestaurants(48.8566, 2.3522); // Recherche des restaurants à Paris
     }
   }, []);
 
-  const searchRestaurants = async () => {
-    if (!position) return; // Ne rien faire si la position n'est pas encore définie
+  const searchRestaurants = async (latitude, longitude) => {
+    const apiKey = "052a9a708a6042bd978f813b9a65ed3e"; // Remplacez par votre clé API Geoapify
 
     try {
-      const response = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=restaurants+near+${position[0]},${position[1]}&format=json&limit=10`
-      );
-      const data = await response.json();
-      setRestaurants(data);
+      const response = await axios.get(`https://api.geoapify.com/v2/places`, {
+        params: {
+          categories: "catering.restaurant", // Catégorie pour les restaurants
+          filter: `circle:${longitude},${latitude};500`, // Rayon de 500 mètres
+          apiKey: apiKey,
+          limit: 10, // Limiter le nombre de résultats
+        },
+      });
+      console.log("Restaurants trouvés :", response.data.features); // Ajoutez ce log
+      setRestaurants(response.data.features);
     } catch (error) {
       console.error("Erreur lors de la recherche des restaurants:", error);
     }
@@ -55,34 +65,36 @@ const MapDisplay = () => {
 
   return (
     <div className="h-[400px] w-full">
-      <button
-        onClick={searchRestaurants}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        Rechercher des restaurants à proximité
-      </button>
-      {positionFound && position ? (
+      {positionFound ? (
         <MapContainer
           center={position}
           zoom={13}
-          style={{ height: "calc(100% - 48px)", width: "100%" }}
+          style={{ height: "100%", width: "100%" }}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
-          <Marker position={position}>
-            <Popup>Vous êtes ici</Popup>
-          </Marker>
-          {restaurants.map((restaurant, index) => (
+          {position && (
+            <Marker position={position}>
+              <Popup>Vous êtes ici</Popup>
+            </Marker>
+          )}
+          {restaurants.map((restaurant) => (
             <Marker
-              key={index}
+              key={restaurant.properties.id}
               position={[
-                parseFloat(restaurant.lat),
-                parseFloat(restaurant.lon),
+                restaurant.geometry.coordinates[1],
+                restaurant.geometry.coordinates[0],
               ]}
             >
-              <Popup>{restaurant.display_name}</Popup>
+              <Popup>
+                <strong>{restaurant.properties.name}</strong>
+                <br />
+                Adresse : {restaurant.properties.address_line1}
+                <br />
+                Catégorie : {restaurant.properties.categories.join(", ")}
+              </Popup>
             </Marker>
           ))}
         </MapContainer>
