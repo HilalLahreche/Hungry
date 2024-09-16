@@ -19,7 +19,6 @@
 // footer{
 // about , contact , menu ,RGPD}
 
-
 import Navbar from "../molecules/Navbar";
 import MainResultPage from "../organisms/MainResultPage";
 import Footer from "../organisms/Footer";
