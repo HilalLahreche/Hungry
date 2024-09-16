@@ -5,9 +5,14 @@ import Logo from "../atoms/Logo";
 const Navbar = () => {
   return (
     <>
-      <BurgerMenu />
-      <Logo />
-    </>
+    <nav className="bg-teal-600 p-4 relative">
+      <div className="flex justify-between items-center">
+           <Logo />
+           <BurgerMenu />
+      </div>
+      </nav>
+
+      </>
   );
 };
 
