@@ -13,16 +13,15 @@
 // footer{
 // about , contact , menu ,RGPD}
 
-import React from "react";
 import Navbar from "../molecules/Navbar";
 import Footer from "../organisms/Footer";
-import Main from "../organisms/MainConnection";
+import MainConnection from "../organisms/MainConnection";
 
 const Connection = () => {
   return (
     <>
       <Navbar />
-      <Main />
+      <MainConnection />
       <Footer />
     </>
   );

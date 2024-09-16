@@ -1,14 +1,21 @@
-import React from "react";
-import SignIn from "../molecules/SignIn";
-import SignUp from "../molecules/SignUp";
+import { Outlet, Link } from "react-router-dom";
 
-const Main = () => {
+const MainConnection = () => {
   return (
     <>
-      <SignIn />
-      <SignUp />
+      <div className="m-5">
+        <div role="tablist" className="tabs tabs-lifted">
+          <Link className="tab" to="signin">
+            Sign In
+          </Link>
+          <Link className="tab" to="signup">
+            Sign Up
+          </Link>
+        </div>
+        <Outlet />
+      </div>
     </>
   );
 };
 
-export default Main;
+export default MainConnection;
