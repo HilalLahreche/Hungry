@@ -1,4 +1,3 @@
-import React from "react";
 import AddressInput from "../atoms/AddressInput";
 import Carousel from "../atoms/Carousel";
 

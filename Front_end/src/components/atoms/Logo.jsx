@@ -1,4 +1,3 @@
-import React from "react";
 import HUNGRY from "../../assets/HUNGRY.svg";
 
 const Logo = () => {

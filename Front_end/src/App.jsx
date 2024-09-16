@@ -1,16 +1,20 @@
 import "./App.css";
+import AddressInput from "./components/atoms/AddressInput";
 import Carousel from "./components/atoms/Carousel";
 import Navbar from "./components/molecules/Navbar";
 
 function App() {
   return (
     <>
-      <div>
+      
         <Navbar />
-      </div>
-      <div>
+      
+      
+        <AddressInput />
+      
+      
         <Carousel />
-      </div>
+      
     </>
   );
 }

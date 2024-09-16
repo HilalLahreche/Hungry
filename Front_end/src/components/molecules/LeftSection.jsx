@@ -1,4 +1,3 @@
-import React from "react";
 import KeywordsInput from "../atoms/KeywordsInput";
 import FilterSection from "../atoms/FilterSection";
 
