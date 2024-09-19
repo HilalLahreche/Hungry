@@ -92,7 +92,7 @@ const MapDisplay = () => {
       {positionFound ? (
         <MapContainer
           center={position}
-          zoom={13}
+          zoom={17}
           style={{ height: "100%", width: "100%" }}
         >
           <TileLayer
