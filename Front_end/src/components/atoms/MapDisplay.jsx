@@ -4,21 +4,38 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import axios from "axios";
 
-// Correction pour l'icône de marqueur par défaut
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
+// Icône personnalisée pour votre position
+const userLocationIcon = new L.Icon({
   iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
   shadowUrl:
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  shadowSize: [41, 41],
+});
+
+// Icône personnalisée pour les lieux de "catering"
+const cateringLocationIcon = new L.Icon({
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+  iconRetinaUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+  shadowSize: [41, 41],
 });
 
 const MapDisplay = () => {
-  const [position, setPosition] = useState(null); // Position initiale
-  const [restaurants, setRestaurants] = useState([]);
-  const [positionFound, setPositionFound] = useState(false); // État pour vérifier si la position a été trouvée
+  const [position, setPosition] = useState(null); // Position de l'utilisateur
+  const [places, setPlaces] = useState([]); // Lieux de la catégorie "catering"
+  const [positionFound, setPositionFound] = useState(false); // Position trouvée
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -27,39 +44,46 @@ const MapDisplay = () => {
           console.log("Position obtenue :", pos);
           setPosition([pos.coords.latitude, pos.coords.longitude]);
           setPositionFound(true);
-          searchRestaurants(pos.coords.latitude, pos.coords.longitude); // Recherche des restaurants dès que la position est obtenue
+          searchPlaces(pos.coords.latitude, pos.coords.longitude); // Recherche des lieux via Overpass dès que la position est obtenue
         },
         (error) => {
           console.error("Erreur de géolocalisation :", error);
           setPosition([48.8566, 2.3522]); // Paris comme fallback
           setPositionFound(true);
-          searchRestaurants(48.8566, 2.3522); // Recherche des restaurants à Paris
+          searchPlaces(48.8566, 2.3522); // Recherche des lieux à Paris
         }
       );
     } else {
       console.log("La géolocalisation n'est pas supportée par ce navigateur.");
       setPosition([48.8566, 2.3522]); // Paris comme fallback
       setPositionFound(true);
-      searchRestaurants(48.8566, 2.3522); // Recherche des restaurants à Paris
+      searchPlaces(48.8566, 2.3522); // Recherche des lieux à Paris
     }
   }, []);
 
-  const searchRestaurants = async (latitude, longitude) => {
-    const apiKey = "052a9a708a6042bd978f813b9a65ed3e"; // Remplacez par votre clé API Geoapify
+  // Fonction pour rechercher les lieux de la catégorie "catering" avec Overpass API
+  const searchPlaces = async (latitude, longitude) => {
+    const overpassUrl = "https://overpass-api.de/api/interpreter";
+
+    // Requête Overpass pour récupérer les lieux de type "catering"
+    const query = `
+      [out:json];
+      (
+        node["amenity"="restaurant"](around:200,${latitude},${longitude});
+        node["amenity"="cafe"](around:200,${latitude},${longitude});
+        node["amenity"="bar"](around:200,${latitude},${longitude});
+        node["amenity"="fast_food"](around:200,${latitude},${longitude});
+
+      );
+      out body;
+    `;
 
     try {
-      const response = await axios.get(`https://api.geoapify.com/v2/places`, {
-        params: {
-          categories: "catering.restaurant", // Catégorie pour les restaurants
-          filter: `circle:${longitude},${latitude};500`, // Rayon de 500 mètres
-          apiKey: apiKey,
-          limit: 10, // Limiter le nombre de résultats
-        },
-      });
-      console.log("Restaurants trouvés :", response.data.features); // Ajoutez ce log
-      setRestaurants(response.data.features);
+      const response = await axios.post(overpassUrl, `data=${query}`);
+      console.log("Lieux trouvés :", response.data.elements);
+      setPlaces(response.data.elements);
     } catch (error) {
-      console.error("Erreur lors de la recherche des restaurants:", error);
+      console.error("Erreur lors de la recherche des lieux:", error);
     }
   };
 
@@ -75,25 +99,23 @@ const MapDisplay = () => {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
+          {/* Marqueur pour la position de l'utilisateur */}
           {position && (
-            <Marker position={position}>
+            <Marker position={position} icon={userLocationIcon}>
               <Popup>Vous êtes ici</Popup>
             </Marker>
           )}
-          {restaurants.map((restaurant) => (
+          {/* Marqueurs pour les lieux de la catégorie "catering" */}
+          {places.map((place) => (
             <Marker
-              key={restaurant.properties.id}
-              position={[
-                restaurant.geometry.coordinates[1],
-                restaurant.geometry.coordinates[0],
-              ]}
+              key={place.id}
+              position={[place.lat, place.lon]}
+              icon={cateringLocationIcon}
             >
               <Popup>
-                <strong>{restaurant.properties.name}</strong>
+                <strong>{place.tags.name || "Lieu sans nom"}</strong>
                 <br />
-                Adresse : {restaurant.properties.address_line1}
-                <br />
-                Catégorie : {restaurant.properties.categories.join(", ")}
+                Type : {place.tags.amenity}
               </Popup>
             </Marker>
           ))}
